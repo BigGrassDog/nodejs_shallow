@@ -16,7 +16,9 @@ app.on("request", (req, res) => {
   switch (urlobj.pathname) {
     case "/api/aaa":
       // 客户端 去猫眼要数据
-      httpGet(res);
+      httpGet((data) => { 
+        res.end(data)
+      });
       break;
     default:
       res.end("404");
@@ -27,7 +29,7 @@ app.listen(3000, () => {
   console.log("server start");
 });
 
-function httpGet(response) {
+function httpGet(callback) {
   let data = "";
   https.get(
     `https://i.maoyan.com/api/mmdb/movie/v3/list/hot.json?ct=%E5%B8%B8%E5%B7%9E&ci=89&channelId=4`,
@@ -37,7 +39,8 @@ function httpGet(response) {
       });
       res.on("end", () => {
         console.log(data);
-        response.end(data)
+        // response.end(data)
+        callback(data)
       });
     }
   );
