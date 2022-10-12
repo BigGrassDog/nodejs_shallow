@@ -4,10 +4,11 @@ const url = require('url')
 const app = http.createServer()
 
 app.on('request', (req, res) => {
-  const urlobj = url.parse(req.url)
+  const urlobj = url.parse(req.url,true)
+  console.log(urlobj.query.callback);
   switch (urlobj.pathname) {
     case '/api/aaa':
-      res.end(`grassdog(${JSON.stringify({
+      res.end(`${urlobj.query.callback}(${JSON.stringify({
         name: 'dog',
         age: 18
       })})`)
