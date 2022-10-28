@@ -11,4 +11,13 @@ router.get("/", (req, res) => {
   res.render('login', {title:'11111111'}) // 找 views 文件夹下的 login.ejs
 });
 
+router.post('/', (req, res) => { 
+  console.log(req.body);
+  if (req.body.username === 'grassdog' && req.body.password === '123456') {
+    console.log('登录成功');
+  } else { 
+    console.log('登录失败');
+  }
+})
+
 module.exports = router;
