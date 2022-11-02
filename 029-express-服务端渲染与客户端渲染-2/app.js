@@ -18,6 +18,7 @@ app.use("/static", express.static("static"));
 // post 参数 username=grassdog&password=123456
 app.use(express.urlencoded({ extended: false }));
 
+
 // post 参数 - {name:'',age:100}
 app.use(express.json());
 
