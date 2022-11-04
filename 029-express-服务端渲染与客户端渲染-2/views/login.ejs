@@ -8,6 +8,7 @@
   </head>
   <body>
     login-页面
+    <%- include('./layout/header.ejs',{isShow:false}) %>
     <h1>推荐--<%=title%></h1>
     
 
@@ -16,5 +17,9 @@
       <div>密码：<input type="password" name="password"></div>
       <div><input type="submit" value="登录"></div>
     </form>
+
+    <p><%=error%></p>
+
+    <%- include('./layout/footer.ejs') %>
   </body>
 </html>
