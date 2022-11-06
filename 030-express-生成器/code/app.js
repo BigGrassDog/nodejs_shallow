@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 // post 参数 - {name:'',age:100}
 app.use(express.json());
 
-// 应用级别
+// 应用级别 
 app.use((req, res, next) => {
   console.log("验证token");
   next();
