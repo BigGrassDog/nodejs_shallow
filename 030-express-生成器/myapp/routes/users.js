@@ -11,4 +11,11 @@ router.get('/', function (req, res, next) {
   res.send('respond with a resource');
 });
 
+router.post('/user/add', (req, res) => {
+  console.log(req.body);
+  // 插入数据库 
+
+  res.send({ok:1});
+ })
+
 module.exports = router;
