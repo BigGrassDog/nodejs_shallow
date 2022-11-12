@@ -14,7 +14,8 @@ router.get('/', function (req, res, next) {
 router.post('/user/add', (req, res) => {
   console.log(req.body);
   // 插入数据库 
-  // 1. 创建一个模型，一一对应数据的集合（users） 
+  // 1. 创建一个模型（user,限制filed类型），一一对应数据的集合（users） 
+  // user.create user.find user.delete user.update
   res.send({ok:1});
  })
 
