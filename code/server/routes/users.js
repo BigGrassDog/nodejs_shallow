@@ -12,6 +12,7 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
+// 注册用户
 router.post("/user/add", (req, res) => {
   console.log(req.body);
   // 插入数据库
@@ -27,5 +28,14 @@ router.post("/user/add", (req, res) => {
   });
   res.send({ ok: 1 });
 });
+
+// 动态路由，获取 id
+router.post('/user/update/:id', (req, res) => { 
+  console.log(req.body, req.params);
+  UserModel.updateOne({
+    _id:req.params.id
+  })
+  res.send({ ok: 1 });
+})
 
 module.exports = router;
