@@ -30,18 +30,44 @@ router.post("/user/add", (req, res) => {
 });
 
 // 动态路由，获取 id
-router.post('/user/update/:id', (req, res) => { 
+// 更新用户信息
+router.post("/user/update/:id", (req, res) => {
   console.log(req.body, req.params);
   const { username, password, age } = req.body;
-  UserModel.updateOne({
-    _id:req.params.id
-  }, {
-    username,
-    password,
-    age,
-  }).then(data => { 
+  UserModel.updateOne(
+    {
+      _id: req.params.id,
+    },
+    {
+      username,
+      password,
+      age,
+    }
+  ).then((data) => {
     res.send({ ok: 1 });
-  })
-})
+  });
+});
+
+// 删除用户信息
+router.get("/user/delete/:id", (req, res) => {
+  UserModel.deleteOne({
+    _id: req.params.id,
+  }).then((data) => {
+    res.send({ ok: 1 });
+  });
+});
+
+// 查询用户信息 分页
+router.get("/user/list", (req, res) => {
+  console.log(req.query);
+  const { page, limit } = req.query;
+  UserModel.find({}, ["username", "age"])
+    .sort({ age: 1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+    .then((data) => {
+      res.send({ code: 200, data: data });
+    });
+});
 
 module.exports = router;

@@ -10,11 +10,20 @@
     <div>密 码：<input type="password" id="password" /></div>
     <div>年 龄：<input type="number" id="age" /></div>
     <div><button id="register">注册</button></div>
-    <hr>
+    <hr />
     <div>
       <button id="update">更新</button>
       <button id="delete">删除</button>
     </div>
+
+    <table border="1">
+      <thead>
+        <td>id</td>
+        <td>用户名</td>
+        <td>年龄</td>
+      </thead>
+      <tbody></tbody>
+    </table>
 
     <script>
       var username = document.querySelector("#username");
@@ -45,7 +54,7 @@
       };
 
       // 更新
-      update.onclick=()=>{
+      update.onclick = () => {
         fetch("/api/user/update/6371e8b87fd38d83cf88f98f", {
           method: "POST",
           body: JSON.stringify({
@@ -61,12 +70,33 @@
           .then((res) => {
             console.log(res);
           });
-      }
+      };
 
       // 删除
-      handleDelete.onclick = ()=>{
+      handleDelete.onclick = () => {
+        fetch("/api/user/delete/6374d12abf026c480b5bb718")
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+          });
+      };
 
-      }
+      // 获取列表
+      fetch("/api/user/list?page=3&limit=3")
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          const list = res.data;
+          const el = document.querySelector("tbody");
+          el.innerHTML = list.map(
+            (item) =>
+              `<tr>
+              <td>${item._id}</td>  
+              <td>${item.username}</td>  
+              <td>${item.age}</td>  
+            </tr>`
+          ).join('')
+        });
     </script>
   </body>
 </html>
