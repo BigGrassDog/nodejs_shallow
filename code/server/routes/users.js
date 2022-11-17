@@ -1,4 +1,5 @@
 var express = require("express");
+const UserController = require('../controllers/UserController');
 const UserModel = require("../model/UserModel");
 var router = express.Router();
 
@@ -12,63 +13,16 @@ router.get("/", function (req, res, next) {
   res.send("respond with a resource");
 });
 
-// 注册用户
 // 响应前端的 post 请求 -- 增加用户
-router.post("/user", (req, res) => {
-  console.log(req.body);
-  // 插入数据库
-  // 1. 创建一个模型（user,限制filed类型），一一对应数据的集合（users）
-  // user.create user.find user.delete user.update
-  const { username, password, age } = req.body;
-  UserModel.create({
-    username,
-    password,
-    age,
-  }).then((data) => {
-    console.log(data);
-    res.send({ ok: 1 });
-  });
-});
+router.post("/user", UserController.addUser);
 
-// 动态路由，获取 id
-// 更新用户信息
-router.put("/user/:id", (req, res) => {
-  console.log(req.body, req.params);
-  const { username, password, age } = req.body;
-  UserModel.updateOne(
-    {
-      _id: req.params.id,
-    },
-    {
-      username,
-      password,
-      age,
-    }
-  ).then((data) => {
-    res.send({ ok: 1 });
-  });
-});
+// 动态路由，获取 id -- 更新用户信息
+router.put("/user/:id", UserController.updateUser);
 
 // 删除用户信息
-router.delete("/user/:id", (req, res) => {
-  UserModel.deleteOne({
-    _id: req.params.id,
-  }).then((data) => {
-    res.send({ ok: 1 });
-  });
-});
+router.delete("/user/:id", UserController.deleteUser);
 
 // 查询用户信息 分页
-router.get("/user", (req, res) => {
-  console.log(req.query);
-  const { page, limit } = req.query;
-  UserModel.find({}, ["username", "age"])
-    .sort({ age: 1 })
-    .skip((page - 1) * limit)
-    .limit(limit)
-    .then((data) => {
-      res.send({ code: 200, data: data });
-    });
-});
+router.get("/user", UserController.listUser);
 
 module.exports = router;

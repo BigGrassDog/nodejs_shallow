@@ -74,7 +74,7 @@
 
       // 删除
       handleDelete.onclick = () => {
-        fetch("/api/user/63708fd26f3a8ba3209c4a61",{
+        fetch("/api/user/63762a0cf936b95e1c8170dd",{
           method:'DELETE'
         })
           .then((res) => res.json())
@@ -88,7 +88,7 @@
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
-          const list = res.data;
+          const list = res;
           const el = document.querySelector("tbody");
           el.innerHTML = list.map(
             (item) =>
