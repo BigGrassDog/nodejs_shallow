@@ -36,7 +36,7 @@
       // 注册
       register.onclick = () => {
         console.log(username.value, password.value, age.value);
-        fetch("/api/user/add", {
+        fetch("/api/user", {
           method: "POST",
           body: JSON.stringify({
             username: username.value,
@@ -55,8 +55,8 @@
 
       // 更新
       update.onclick = () => {
-        fetch("/api/user/update/6371e8b87fd38d83cf88f98f", {
-          method: "POST",
+        fetch("/api/user/637617f53fa9365df092f85a", {
+          method: "PUT",
           body: JSON.stringify({
             username: username.value,
             password: password.value,
@@ -74,7 +74,9 @@
 
       // 删除
       handleDelete.onclick = () => {
-        fetch("/api/user/delete/6374d12abf026c480b5bb718")
+        fetch("/api/user/63708fd26f3a8ba3209c4a61",{
+          method:'DELETE'
+        })
           .then((res) => res.json())
           .then((res) => {
             console.log(res);
@@ -82,7 +84,7 @@
       };
 
       // 获取列表
-      fetch("/api/user/list?page=3&limit=3")
+      fetch("/api/user?page=1&limit=10")
         .then((res) => res.json())
         .then((res) => {
           console.log(res);
