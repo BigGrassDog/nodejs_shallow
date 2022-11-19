@@ -65,18 +65,14 @@
                 console.log(res);
                 const list = res;
                 const el = document.querySelector("tbody");
-                el.innerHTML = list
-                    .map(
-                        (item) =>
-                            `<tr>
-              <td>${item._id}</td>  
-              <td>${item.username}</td>  
-              <td>${item.age}</td>  
-              <td><button class="update" data-id="${item._id}">更新</button></td>  
-              <td><button class="delete" data-id="${item._id}">删除</button></td>  
-            </tr>`
-                    )
-                    .join("");
+                el.innerHTML = list.map((item) =>
+                    `<tr>
+                        <td>${item._id}</td>
+                        <td>${item.username}</td>
+                        <td>${item.age}</td>
+                        <td><button class="update" data-id="${item._id}">更新</button></td>
+                        <td><button class="delete" data-id="${item._id}">删除</button></td>
+                    </tr>`).join("");
             });
     };
     getList();
