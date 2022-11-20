@@ -8,6 +8,9 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login')
 
+// 引入
+var session = require('express-session')
+
 var app = express();
 
 // view engine setup
@@ -19,6 +22,35 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// 注册 session 中间件
+app.use(session({
+    name: 'biggrassdogsystem',
+    secret: 'big grass dog',
+    cookie: {
+        maxAge: 1000 * 60 * 60,
+        secure: false
+    },
+    resave: true,
+    saveUninitialized: true
+}))
+
+// 设置中间件，session 过期校验
+app.use((req, res, next) => {
+    // 排除 login 相关的路由和接口
+    if (req.url.includes('login')) {
+        next()
+        return
+    }
+
+    if (req.session.user) {
+        next()
+    } else {
+        // 是接口，返回错误码
+        // 不是接口，就重定向
+        req.url.includes('api') ? res.status(401).send({ok: 0, msg: '登录过期'}) : res.redirect('/login')
+    }
+})
 
 app.use('/', indexRouter);
 app.use('/api', usersRouter);

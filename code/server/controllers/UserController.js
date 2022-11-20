@@ -37,6 +37,8 @@ const UserController = {
         if (data.length === 0) {
             res.send({ok: 0})
         } else {
+            // 设置 session
+            req.session.user = data[0] // 设置 session 对象
             res.send({ok: 1})
         }
     }
