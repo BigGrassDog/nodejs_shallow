@@ -24,8 +24,7 @@ const UserService = {
     },
 
     login: (username, password) => {
-        return UserModel.findOne({username, password})
-
+        return UserModel.find({username, password})
     }
 }
 

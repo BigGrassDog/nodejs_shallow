@@ -34,7 +34,7 @@ const UserController = {
         const {username, password} = req.body
         const data = await UserService.login(username, password)
         console.log(data)
-        if (data) {
+        if (data.length === 0) {
             res.send({ok: 0})
         } else {
             res.send({ok: 1})

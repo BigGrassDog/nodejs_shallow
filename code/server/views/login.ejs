@@ -37,6 +37,11 @@
             .then((res) => res.json())
             .then((res) => {
                 console.log(res);
+                if (res.ok === 1) {
+                    location.href = '/'
+                } else {
+                    alert('用户名密码不匹配')
+                }
             });
     };
 </script>
