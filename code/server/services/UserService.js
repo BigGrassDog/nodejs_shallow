@@ -22,6 +22,11 @@ const UserService = {
             .skip((page - 1) * limit)
             .limit(limit);
     },
-};
 
-module.exports = UserService;
+    login: (username, password) => {
+        return UserModel.findOne({username, password})
+
+    }
+}
+
+module.exports = UserService

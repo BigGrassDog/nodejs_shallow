@@ -29,6 +29,17 @@ const UserController = {
         const data = await UserService.listUser(page, limit);
         res.send(data);
     },
+
+    login: async (req, res) => {
+        const {username, password} = req.body
+        const data = await UserService.login(username, password)
+        console.log(data)
+        if (data) {
+            res.send({ok: 0})
+        } else {
+            res.send({ok: 1})
+        }
+    }
 };
 
 module.exports = UserController;

@@ -25,4 +25,7 @@ router.delete("/user/:id", UserController.deleteUser);
 // 查询用户信息 分页
 router.get("/user", UserController.listUser);
 
+// 登录校验
+router.post('/login',UserController.login)
+
 module.exports = router;
