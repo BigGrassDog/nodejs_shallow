@@ -10,6 +10,7 @@ const loginRouter = require('./routes/login');
 
 // 引入
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const app = express();
 
@@ -31,8 +32,12 @@ app.use(session({
         maxAge: 1000 * 60 * 60,
         secure: false
     },
-    resave: true,
-    saveUninitialized: true
+    resave: true, // 重新设置 session 后，会自动重新计算过期时间
+    saveUninitialized: true,
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://127.0.0.1:27017/biggrassdog_session',// 新创建了一个数据库
+        ttl: 100 * 60 * 10 // 过期时间
+    })
 }))
 
 // 设置中间件，session 过期校验
@@ -44,6 +49,8 @@ app.use((req, res, next) => {
     }
 
     if (req.session.user) {
+        // 放行后重新设置下session
+        req.session.userdate = Date.now()
         next()
     } else {
         // 是接口，返回错误码

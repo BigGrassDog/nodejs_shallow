@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>后台系统-用户管理业务</h1>
+<button id="logout">退出登录</button>
 <div>用户名：<input id="username"/></div>
 <div>密 码：<input type="password" id="password"/></div>
 <div>年 龄：<input type="number" id="age"/></div>
@@ -29,12 +30,13 @@
 </table>
 
 <script>
-    var username = document.querySelector("#username");
-    var password = document.querySelector("#password");
-    var age = document.querySelector("#age");
-    var register = document.querySelector("#register");
-    var update = document.getElementsByClassName(".update");
-    var handleDelete = document.getElementsByClassName(".delete");
+    const username = document.querySelector("#username");
+    const password = document.querySelector("#password");
+    const age = document.querySelector("#age");
+    const register = document.querySelector("#register");
+    const logout = document.querySelector("#logout");
+    const update = document.getElementsByClassName(".update");
+    const handleDelete = document.getElementsByClassName(".delete");
 
     // 注册
     register.onclick = () => {
@@ -58,7 +60,7 @@
     };
 
     // 获取列表
-    var getList = () => {
+    const getList = () => {
         fetch("/api/user?page=1&limit=10")
             .then((res) => res.json())
             .then((res) => {
@@ -76,6 +78,15 @@
             });
     };
     getList();
+
+    // 退出登陆
+    logout.onclick = () => {
+        fetch('/api/logout').then(res => res.json()).then(res => {
+            if (res.ok === 1) {
+                location.href = '/login'
+            }
+        })
+    }
 
     document.addEventListener("click", (e) => {
         // 更新

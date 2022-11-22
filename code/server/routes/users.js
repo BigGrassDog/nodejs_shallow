@@ -25,6 +25,13 @@ router.delete("/user/:id", UserController.deleteUser);
 router.get("/user", UserController.listUser);
 
 // 登录校验
-router.post('/login',UserController.login)
+router.post('/login', UserController.login)
+
+// 退出登录
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.send({ok: 1})
+    })
+})
 
 module.exports = router;
