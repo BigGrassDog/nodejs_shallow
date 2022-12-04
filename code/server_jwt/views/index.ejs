@@ -3,6 +3,32 @@
 <head>
     <title><%= title %></title>
     <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        // 拦截器
+        // Add a request interceptor
+        axios.interceptors.request.use(function (config) {
+            console.log('请求发出前，执行的方法')
+            // Do something before request is sent
+            return config;
+        }, function (error) {
+            // Do something with request error
+            return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+            // console.log('任何请求成功后，第一个调用的方法')
+            // console.log(response.headers)
+            const {authorization} = response.headers
+            authorization && localStorage.setItem('token', authorization)
+            return response;
+        }, function (error) {
+            // Any status codes that falls outside the range of 2xx cause this function to trigger
+            // Do something with response error
+            return Promise.reject(error);
+        });
+    </script>
 </head>
 <body>
 <h1>后台系统-用户管理业务</h1>
@@ -40,42 +66,63 @@
 
     // 注册
     register.onclick = () => {
-        console.log(username.value, password.value, age.value);
-        fetch("/api/user", {
-            method: "POST",
-            body: JSON.stringify({
-                username: username.value,
-                password: password.value,
-                age: age.value,
-            }),
-            headers: {
-                "Content-Type": "Application/json",
-            },
+        // console.log(username.value, password.value, age.value);
+        // fetch("/api/user", {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         username: username.value,
+        //         password: password.value,
+        //         age: age.value,
+        //     }),
+        //     headers: {
+        //         "Content-Type": "Application/json",
+        //     },
+        // })
+        //     .then((res) => res.json())
+        //     .then((res) => {
+        //         console.log(res);
+        //         getList()
+        //     });
+
+        axios.post('/api/user', {
+            username: username.value,
+            password: password.value,
+            age: age.value,
+        }).then(res => {
+            getList()
         })
-            .then((res) => res.json())
-            .then((res) => {
-                console.log(res);
-                getList()
-            });
     };
 
     // 获取列表
     const getList = () => {
-        fetch("/api/user?page=1&limit=10")
-            .then((res) => res.json())
-            .then((res) => {
-                console.log(res);
-                const list = res;
-                const el = document.querySelector("tbody");
-                el.innerHTML = list.map((item) =>
-                    `<tr>
+        // fetch("/api/user?page=1&limit=10")
+        //     .then((res) => res.json())
+        //     .then((res) => {
+        //         console.log(res);
+        //         const list = res;
+        //         const el = document.querySelector("tbody");
+        //         el.innerHTML = list.map((item) =>
+        //             `<tr>
+        //                 <td>${item._id}</td>
+        //                 <td>${item.username}</td>
+        //                 <td>${item.age}</td>
+        //                 <td><button class="update" data-id="${item._id}">更新</button></td>
+        //                 <td><button class="delete" data-id="${item._id}">删除</button></td>
+        //             </tr>`).join("");
+        //     });
+
+        axios.get('/api/user?page=1&limit=10').then(res => {
+            const list = res;
+            const el = document.querySelector("tbody");
+            el.innerHTML = list.map((item) =>
+                `<tr>
                         <td>${item._id}</td>
                         <td>${item.username}</td>
                         <td>${item.age}</td>
                         <td><button class="update" data-id="${item._id}">更新</button></td>
                         <td><button class="delete" data-id="${item._id}">删除</button></td>
                     </tr>`).join("");
-            });
+        })
     };
     getList();
 
