@@ -1,5 +1,5 @@
 const UserService = require("../services/UserService");
-const JWT = require("../../server/util/JWT");
+const JWT = require("../util/JWT");
 
 const UserController = {
     addUser: async (req, res) => {
