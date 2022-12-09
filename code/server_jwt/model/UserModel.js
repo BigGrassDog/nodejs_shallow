@@ -9,4 +9,4 @@ const UserType = {
 
 const UserModel = mongoose.model("user", new Schema(UserType))
 // 模型 user 将会对应 users 集合
-module.exports = UserModel
+module.exports = UserModel 
