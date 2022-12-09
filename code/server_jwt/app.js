@@ -43,20 +43,21 @@ app.use(session({
 // 设置中间件，session 过期校验
 app.use((req, res, next) => {
     // 排除 login 相关的路由和接口
-    if (req.url.includes('login')) {
-        next()
-        return
-    }
-
-    if (req.session.user) {
-        // 放行后重新设置下session
-        req.session.userdate = Date.now()
-        next()
-    } else {
-        // 是接口，返回错误码
-        // 不是接口，就重定向
-        req.url.includes('api') ? res.status(401).send({ok: 0, msg: '登录过期'}) : res.redirect('/login')
-    }
+    // if (req.url.includes('login')) {
+    //     next()
+    //     return
+    // }
+    //
+    // if (req.session.user) {
+    //     // 放行后重新设置下session
+    //     req.session.userdate = Date.now()
+    //     next()
+    // } else {
+    //     // 是接口，返回错误码
+    //     // 不是接口，就重定向
+    //     req.url.includes('api') ? res.status(401).send({ok: 0, msg: '登录过期'}) : res.redirect('/login')
+    // }
+    next()
 })
 
 app.use('/', indexRouter);

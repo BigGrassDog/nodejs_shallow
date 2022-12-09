@@ -34,7 +34,7 @@ const UserController = {
     login: async (req, res) => {
         const {username, password} = req.body
         const data = await UserService.login(username, password)
-        console.log(data)
+        console.log('登陆查询结果',data)
         if (data.length === 0) {
             res.send({ok: 0})
         } else {
