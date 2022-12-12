@@ -11,6 +11,7 @@ const loginRouter = require('./routes/login');
 // 引入
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const JWT = require("./util/JWT");
 
 const app = express();
 
@@ -48,8 +49,17 @@ app.use((req, res, next) => {
         return
     }
 
-    console.log(req.headers['authorization']?.split(" ")[1])
-    next()
+    const token = req.headers['authorization']?.split(" ")[1]
+    if (token) {
+        const payload = JWT.verify(token)
+        if (payload) {
+            next()
+        } else {
+            res.status(401).send({errCode: -1, errInfo: "token 过期"})
+        }
+    } else {
+        next()
+    }
 })
 
 app.use('/', indexRouter);
