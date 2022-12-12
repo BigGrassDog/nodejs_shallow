@@ -10,6 +10,8 @@
         axios.interceptors.request.use(function (config) {
             console.log('请求发出前，执行的方法')
             // Do something before request is sent
+            const token = localStorage.getItem('token')
+            config.headers.Authorization = `Bearer ${token}`
             return config;
         }, function (error) {
             // Do something with request error
@@ -66,24 +68,6 @@
 
     // 注册
     register.onclick = () => {
-        // console.log(username.value, password.value, age.value);
-        // fetch("/api/user", {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         username: username.value,
-        //         password: password.value,
-        //         age: age.value,
-        //     }),
-        //     headers: {
-        //         "Content-Type": "Application/json",
-        //     },
-        // })
-        //     .then((res) => res.json())
-        //     .then((res) => {
-        //         console.log(res);
-        //         getList()
-        //     });
-
         axios.post('/api/user', {
             username: username.value,
             password: password.value,
@@ -95,24 +79,8 @@
 
     // 获取列表
     const getList = () => {
-        // fetch("/api/user?page=1&limit=10")
-        //     .then((res) => res.json())
-        //     .then((res) => {
-        //         console.log(res);
-        //         const list = res;
-        //         const el = document.querySelector("tbody");
-        //         el.innerHTML = list.map((item) =>
-        //             `<tr>
-        //                 <td>${item._id}</td>
-        //                 <td>${item.username}</td>
-        //                 <td>${item.age}</td>
-        //                 <td><button class="update" data-id="${item._id}">更新</button></td>
-        //                 <td><button class="delete" data-id="${item._id}">删除</button></td>
-        //             </tr>`).join("");
-        //     });
-
         axios.get('/api/user?page=1&limit=10').then(res => {
-            const list = res;
+            const list = res.data || [];
             const el = document.querySelector("tbody");
             el.innerHTML = list.map((item) =>
                 `<tr>
@@ -128,11 +96,8 @@
 
     // 退出登陆
     logout.onclick = () => {
-        fetch('/api/logout').then(res => res.json()).then(res => {
-            if (res.ok === 1) {
-                location.href = '/login'
-            }
-        })
+        localStorage.removeItem('token ')
+        location.href = '/login'
     }
 
     document.addEventListener("click", (e) => {
@@ -140,34 +105,27 @@
         if (e.srcElement.className === "update") {
             console.log(e.srcElement.className);
             let id = e.srcElement.dataset.id;
-            fetch(`/api/user/${id}`, {
-                method: "PUT",
-                body: JSON.stringify({
-                    username: username.value,
-                    password: password.value,
-                    age: age.value,
-                }),
-                headers: {
-                    "Content-Type": "Application/json",
-                },
+            axios.put(`/api/user/${id}`, {
+                username: username.value,
+                password: password.value,
+                age: age.value,
+            }).then(res => {
+                console.log(res)
+                getList();
+            }).catch(err => {
+                location.href = '/login'
+                console.log(err)
             })
-                .then((res) => res.json())
-                .then((res) => {
-                    console.log(res);
-                    getList();
-                });
         } else if (e.srcElement.className === "delete") {
             // 删除
             console.log(e.srcElement.className);
             let id = e.srcElement.dataset.id;
-            fetch(`/api/user/${id}`, {
-                method: "DELETE",
+            axios.delete(`/api/user/${id}`).then(res => {
+                console.log(res);
+                getList();
+            }).catch(err => {
+                console.log(err)
             })
-                .then((res) => res.json())
-                .then((res) => {
-                    console.log(res);
-                    getList();
-                });
         }
     });
 </script>
