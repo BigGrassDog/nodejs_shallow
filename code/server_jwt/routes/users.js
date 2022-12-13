@@ -2,6 +2,9 @@ const express = require("express");
 const UserController = require('../controllers/UserController');
 const router = express.Router();
 
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 /* GET users listing. */
 router.get("/", function (req, res, next) {
     // 读取前端的 cookie 值
