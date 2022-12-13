@@ -7,6 +7,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
+const uploadRouter = require('./routes/upload')
 
 // 引入
 const session = require('express-session');
@@ -58,7 +59,7 @@ app.use((req, res, next) => {
             const newToken = JWT.generate({
                 _id: payload._id,
                 username: payload.username
-            }, '1d ')
+            }, '1d')
             res.header('Authorization', newToken)
             next()
         } else {
@@ -72,6 +73,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/api', usersRouter);
 app.use('/login', loginRouter);
+app.use('/upload', uploadRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
