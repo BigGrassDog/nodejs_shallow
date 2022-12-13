@@ -42,7 +42,7 @@ const UserController = {
             const token = JWT.generate({
                 _id: data[0]._id,
                 username: data[0].username
-            }, "1h")
+            }, "1d")
             // token 返回在 header
             res.header("Authorization", token)
             res.send({ok: 1})

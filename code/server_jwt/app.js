@@ -52,7 +52,14 @@ app.use((req, res, next) => {
     const token = req.headers['authorization']?.split(" ")[1]
     if (token) {
         const payload = JWT.verify(token)
+        console.log(payload)
         if (payload) {
+            // 重新计算 token 过期时间
+            const newToken = JWT.generate({
+                _id: payload._id,
+                username: payload.username
+            }, '1d ')
+            res.header('Authorization', newToken)
             next()
         } else {
             res.status(401).send({errCode: -1, errInfo: "token 过期"})
