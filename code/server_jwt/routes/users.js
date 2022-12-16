@@ -1,9 +1,10 @@
 const express = require("express");
+const {readFile} = require('fs')
 const UserController = require('../controllers/UserController');
 const router = express.Router();
 
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const multer = require('multer')
+const upload = multer({dest: 'public/uploads/'})
 
 /* GET users listing. */
 router.get("/", function (req, res, next) {
@@ -16,7 +17,7 @@ router.get("/", function (req, res, next) {
 });
 
 // 响应前端的 post 请求 -- 增加用户
-router.post("/user", UserController.addUser);
+router.post("/user", upload.single('avatar'), UserController.addUser);
 
 // 动态路由，获取 id -- 更新用户信息
 router.put("/user/:id", UserController.updateUser);
