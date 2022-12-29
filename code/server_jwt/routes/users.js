@@ -17,6 +17,32 @@ router.get("/", function (req, res, next) {
 });
 
 // 响应前端的 post 请求 -- 增加用户
+/**
+ * @api {post} /api/user user
+ * @apiName addUser
+ * @apiGroup usergroup
+ * @apiVersion 1.0.0
+ *
+ * @apiParam {String} username 用户名
+ * @apiParam {String} password 密码
+ * @apiParam {Number} age 年龄
+ * @apiParam {File} avatar 头像
+ *
+ * @apiParamExample {multipart/form-data} Request-Example:
+ * {
+ *     username:'gd',
+ *     password:'123',
+ *     age:100,
+ *     avatar:File
+ * }
+ *
+ *
+ * @apiSuccess (200) {Number}  ok 标识成功字段
+ * @apiSuccessExample {type} Success-Response
+ * {
+ *     ok:1
+ * }
+ */
 router.post("/user", upload.single('avatar'), UserController.addUser);
 
 // 动态路由，获取 id -- 更新用户信息
