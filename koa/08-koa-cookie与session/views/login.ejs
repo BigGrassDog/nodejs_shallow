@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <div>
+        用户名：
+        <input type="text" id="username"/>
+    </div>
+    <div>
+        密码：
+        <input type="password" name="" id="password"/>
+    </div>
+    <div>
+        <button id="loginPost">登录-post</button>
+    </div>
+</div>
+
+<script>
+    var elogin = document.querySelector("#login");
+    var plogin = document.querySelector("#loginPost");
+    var username = document.querySelector("#username");
+    var password = document.querySelector("#password");
+
+
+    // post 请求
+    plogin.onclick = () => {
+        // fetch(`/user`, {
+        //   method: "POST",
+        //   body: JSON.stringify({
+        //     username: username.value,
+        //     password: password.value,
+        //   }),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        // })
+        //   .then(res => res.text())
+        //   .then((res) => {
+        //     console.log(res);
+        //   });
+        fetch(`/user/login`, {
+            method: "POST",
+            body: `username=${username.value}&password=${password.value}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+        })
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                if(res.ok === 1){
+                    location.href = '/'
+                }
+            });
+    };
+</script>
+</body>
+</html>
