@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        // 拦截器
+        // Add a request interceptor
+        axios.interceptors.request.use(function (config) {
+            console.log('请求发出前，执行的方法')
+            // Do something before request is sent
+            const token = localStorage.getItem('token')
+            config.headers.Authorization = `Bearer ${token}`
+            return config;
+        }, function (error) {
+            // Do something with request error
+            return Promise.reject(error);
+        });
+
+        // Add a response interceptor
+        axios.interceptors.response.use(function (response) {
+            // console.log('任何请求成功后，第一个调用的方法')
+            // console.log(response.headers)
+            const {authorization} = response.headers
+            authorization && localStorage.setItem('token', authorization)
+            return response;
+        }, function (error) {
+            // Any status codes that falls outside the range of 2xx cause this function to trigger
+            // Do something with response error
+            return Promise.reject(error);
+        });
+    </script>
+</head>
+<body>
+<h1>登录页面</h1>
+<div class="main-container">
+    <div>用户名：<label for="username">用户名：</label><input id="username"/></div>
+    <div>密 码：<label for="password">密 码：</label><input type="password" id="password"/></div>
+    <div>
+        <button id="login">登录</button>
+    </div>
+</div>
+<script>
+    const username = document.querySelector("#username");
+    const password = document.querySelector("#password");
+    const login = document.querySelector('#login');
+
+    // 登录
+    login.onclick = () => {
+        axios.post('/user/login', {
+            username: username.value,
+            password: password.value
+        }).then(res => {
+            console.log(res)
+            const data = res.data
+            if (data.ok === 1) {
+                // 存储 token
+
+                location.href = '/'
+            } else {
+                alert('用户名密码不匹配')
+            }
+        })
+    };
+</script>
+</body>
+</html>
